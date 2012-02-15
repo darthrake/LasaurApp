@@ -114,7 +114,7 @@ SVGReader = {
           // 4.) parse tag 
           // with current attributes and transformation
           if (this.SVGTagMapping[tag.tagName]) {
-            if (node.stroke[0] == 255 && node.stroke[1] == 0 && node.stroke[2] == 0) {
+            if (node.stroke[0] <= 255 && node.stroke[1] == 0 && node.stroke[2] == 0) {
               this.SVGTagMapping[tag.tagName](this, tag, node)
             }
           }
@@ -125,6 +125,7 @@ SVGReader = {
             var subpath = node.path[k];
             for (var l=0; l<node.path[k].length; l++) {
               subpath[l] =  this.matrixApply(node.xformToWorld, subpath[l]);
+              subpath[l].push(node.stroke[0]);
             }
             this.boundarys.allcolors.push(subpath); 
           }          

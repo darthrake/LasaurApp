@@ -54,7 +54,7 @@ $(document).ready(function(){
       var dpi = parseFloat($('#dpi_value').val());
       if (!isNaN(dpi)) {
         var px2mm = 25.4*(1.0/dpi);
-        raw_gcode = GcodeWriter.write(geo_boundarys, 2000, 255, px2mm, 0.0, 0.0);
+        raw_gcode = GcodeWriter.write(geo_boundarys, 2000, $("#import_intensity").slider("value")/100, px2mm, 0.0, 0.0);
         GcodeReader.parse(raw_gcode, 0.5);
         GcodeReader.draw(icanvas);
       } else {
@@ -66,7 +66,7 @@ $(document).ready(function(){
   }
   
   function wrapGcode(gcode, feedrate, intensity) {
-    var header = "%\nG21\nG90\nS"+intensity+"\nG1 F"+feedrate+"\nG0 F10000\n"
+    var header = "%\nG21\nG90\nG1 F"+feedrate+"\nG0 F10000\n"
     var footer = "S0\nG00X0Y0F15000\n%"
     return header + gcode + footer;
   }
@@ -110,7 +110,7 @@ $(document).ready(function(){
   });
   $('#feedrate_val').text($('#import_feedrate').slider("value"));
   //
-  $("#import_intensity").slider({ min:0, max:255, step:5, value:80 });
+  $("#import_intensity").slider({ min:0, max:200, step:1., value:100 });
   $("#import_intensity").bind( "slide", function(event, ui) {
   	//$('#import_intensity_field').val($('#import_intensity').slider("option", "value"));
   	$('#intensity_val').text($('#import_intensity').slider("value"));
